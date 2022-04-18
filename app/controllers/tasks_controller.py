@@ -128,17 +128,6 @@ def patch_tasks(id):
         get_task = Tasks.query.get(id)
 
         if("importance" not in data.keys() and "urgency" not in data.keys()):
-            for key, value in data.items():
-                setattr(get_task, key, value)
-
-            current_app.db.session.add(get_task)
-            current_app.db.session.commit()
-
-            categories = []
-
-            for i in get_task.categories:
-                categories.append(i.name)
-
             if(get_task.importance == 1 and get_task.urgency == 1):
                 eisenhower_id = 1
             elif(get_task.importance == 2 and get_task.urgency == 1):
@@ -147,20 +136,7 @@ def patch_tasks(id):
                 eisenhower_id = 3
             elif(get_task.importance == 2 and get_task.urgency == 2):
                 eisenhower_id = 4
-
-            classification = EisenHowers.query.get(eisenhower_id)
-
-            serialized = {
-                "id": get_task.id,
-                "name": get_task.name,
-                "description": get_task.description,
-                "duration": get_task.duration,
-                "classification": classification.type,
-                "categories": categories
-            }
-
-            return jsonify(serialized), 200
-
+                
         if("importance" in data.keys() and "urgency" in data.keys()):
             if(data["importance"] == 1 and data["urgency"] == 1):
                 eisenhower_id = 1
