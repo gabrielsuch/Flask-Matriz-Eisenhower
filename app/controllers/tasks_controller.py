@@ -1,3 +1,4 @@
+from calendar import c
 from flask import request, jsonify, current_app
 from psycopg2 import IntegrityError
 from app.models.tasks_models import Tasks
@@ -39,7 +40,19 @@ def post_tasks():
         categories = []
 
         for i in category_name:
-            categories.append(Categories.query.filter_by(name = i).first())
+            category = Categories.query.filter_by(name = i).first()
+
+            if(category != None):
+                categories.append(category)
+            else:
+                object = {
+                    "name": i
+                }
+
+                create_category = Categories(**object)
+
+                current_app.db.session.add(create_category)
+                current_app.db.session.commit()
 
 
         if(data["importance"] == 1 and data["urgency"] == 1):

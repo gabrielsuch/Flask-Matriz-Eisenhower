@@ -17,7 +17,7 @@ class Categories(db.Model):
 
     @validates("name")
     def validate_name(self, key, name):
-        if(type(name) != str or not name.isalpha()):
+        if(type(name) != str):
             raise NameErrorExc ("Field (name) must be a String Type")
 
         return name
