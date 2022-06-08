@@ -23,12 +23,12 @@ def post_categories():
         return {
             "allowed_keys": allowed_keys,
             "wrong_keys": wrong_keys
-        }
+        }, 400
 
     if(missing_keys):
         return {
             "missing_keys": missing_keys
-        }
+        }, 400
 
     try:
         send_data = Categories(**data)
